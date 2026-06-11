@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>고단가 키워드 추천기 - 블로그 수익화 마스터 가이드</title>
     <meta name="description" content="블로그 애드센스 수익 극대화를 위한 고단가 황금 키워드 실시간 추천 및 카테고리별 전문 시장 분석 정보를 제공합니다.">
+    <meta name="google-adsense-account" content="ca-pub-5218191513460731">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- 구글 애드센스 스크립트 -->
@@ -327,7 +328,7 @@
         <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
     </div>
 
-    <!-- ⚡ [위치 변경] 추천기 실행 섹션을 상단으로 이동 -->
+    <!-- 추천기 실행 섹션 -->
     <section class="search-box" id="tool-section">
         <div class="form-group">
             <label for="categorySelect"><i class="fa-solid fa-circle-dot" style="color:var(--primary-blue)"></i> 분석 및 추천받을 타겟 카테고리를 설정하세요</label>
@@ -387,7 +388,7 @@
         <h2>📘 애드센스 공식 지침 기반의 고수익 블로그 운영 전략</h2>
         <p>에드센스 공식 블로그 교육 자료에 명시된 핵심 원칙을 바탕으로 정리한 실전 포스팅 전략 가이드입니다.</p>
         <ol>
-            <li><strong>문맥의 일관성 및 깊이 유지 (Contextual Relevance):</strong> 구글 크롤러 로봇은 페이지 내부 단어들의 유기적 연관성을 정밀 분석합니다. 추천받은 핵심 키워드를 제목과 본문 상단에 자연스럽게 배치하고, 서술형 문장 구조로 최소 1,500자 이상의 깊이 있는 정보를 제공해야 단가가 높은 문맥 광고가 자동 매칭됩니다.</li>
+            <li><strong>문맥의 일관성 및 깊이 유지 (Contextual Relevance):</strong> 구글 크롤러 로봇은 페이지 내부 단어들의 유기적 연관성을 정밀 분석합니다. 추천받은 핵심 키워드를 제목และ 본문 상단에 자연스럽게 배치하고, 서술형 문장 구조로 최소 1,500자 이상의 깊이 있는 정보를 제공해야 단가가 높은 문맥 광고가 자동 매칭됩니다.</li>
             <li><strong>독창적 경험 중심의 글쓰기 (Originality):</strong> 타 사이트의 글을 단순히 짜깁기하거나 복사 및 붙여넣기 한 콘텐츠는 저품질 페널티의 대상이 됩니다. 자신의 주관적 해석이나 실제 경험담, 나만의 팁을 가미하여 '인터넷상에 유일한 가치를 지닌 콘텐츠'로 포지셔닝해야 장기적으로 상위 노출을 유지할 수 있습니다.</li>
             <li><strong>사용자 편의성을 고려한 가독성 (User Experience):</strong> 텍스트가 빽빽하게 뭉쳐있으면 방문자가 즉시 이탈하여 체류 시간이 극도로 낮아집니다. 가독성을 위해 적절한 소제목(H2, H3) 구조를 활용하고, 핵심 문장에는 굵게 처리를 하거나 목록 태그(ul, li)를 써서 구조화하는 습관이 매우 중요합니다.</li>
         </ol>
@@ -415,8 +416,10 @@
 </footer>
 
 <script>
-    const spreadsheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTjscU48VCHt-f78u0w4p4qZfP_L-fUf8G_NlU3i9aBvR4W_Example/pub?output=csv";
+    // 🔗 제공해주신 전용 구글 스프레드시트 CSV 주소 연동 완료
+    const spreadsheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSoSHcLVqvT0Jrg9smb9HlEasxs6ykkGCam2GIQZwmuCU2O_GoX0rx7Es6WWpBkepstvGALS1Jyc9K1/pub?output=csv";
 
+    // 동기화 지연 또는 네트워크 차단 시 작동할 백업 기본 데이터셋
     let keywordDatabase = [
         { name: "65세 이상 임플란트 정부 지원 혜택 및 본인부담금 모의 계산법", category: "health", categoryKo: "건강/의학/보험", cpc: 5.20, competition: "중간", tip: "정부 지원 만 65세 기준 나이 계산법과 치과 방문 시 필수 확인 서류 및 주의사항을 상세히 기술하세요." },
         { name: "소상공인 저금리 대환대출 자격 조건 및 온라인 신청 홈페이지 바로가기", category: "finance", categoryKo: "금융/재테크/대출", cpc: 6.50, competition: "높음", tip: "올해 소상공인시장진흥공단에서 발표한 최신 지침과 서류 접수 꿀팁을 연계하여 작성하세요." },
@@ -441,6 +444,7 @@
                     const line = lines[i].trim();
                     if (!line) continue;
 
+                    // 쉼표(,) 기준 파싱 처리
                     const parts = line.split(',');
                     if (parts.length >= 6) {
                         parsedDatabase.push({
@@ -460,7 +464,7 @@
                 }
             })
             .catch(error => {
-                console.log("실시간 동기화 스킵 (자체 고품질 데이터셋 가동):", error);
+                console.log("실시간 동기화 스킵 (기본 로컬 데이터셋 가동):", error);
             });
     });
 
