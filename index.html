@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>고단가 키워드 추천기 - 블로그 수익화 마스터 가이드</title>
+    <meta name="description" content="블로그 애드센스 수익 극대화를 위한 고단가 황금 키워드를 무료로 추출하고 분석해주는 전문 정보 제공 플랫폼입니다.">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --dark-text: #222222;
+            --bg-gray: #f8f9fa;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: var(--dark-text);
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        /* 내비게이션 바 (구조적 가치 증명) */
+        .nav-bar {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: #555;
+            margin-left: 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        header h1 {
+            color: var(--primary-blue);
+            font-size: 2.2rem;
+            margin: 0;
+        }
+
+        /* 텍스트 콘텐츠 보강 구역 (중요: 애드센스 봇 수집용) */
+        .info-article {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .info-article h2 {
+            font-size: 1.3rem;
+            color: #111;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary-blue);
+            padding-left: 10px;
+        }
+        .info-article p {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .promo-box-zone {
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            padding: 10px;
+            margin: 15px 0;
+            text-align: center;
+            border-radius: 8px;
+            min-height: 100px;
+        }
+        .promo-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        .banner-link-click {
+            background: linear-gradient(135deg, #fff5f5, #fff0f0);
+            border: 2px dashed #ff6b6b;
+            padding: 20px;
+            color: #c92a2a;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .search-box {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid var(--primary-blue);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #999999;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .btn-large {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background-color: #ff9900;
+            color: #000000;
+            border: 1px solid #000;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 4px 0 #cc7a00;
+        }
+
+        .btn-large:active {
+            transform: translateY(3px);
+            box-shadow: none;
+        }
+
+        .single-result-card {
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 12px;
+            padding: 30px 20px;
+            margin-top: 20px;
+        }
+
+        .result-tag {
+            display: inline-block;
+            background: #e6f4ea;
+            color: #137333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .result-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #000;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            background: #fff9db;
+            padding: 10px;
+            border-left: 6px solid #fab005;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dddddd;
+        }
+
+        .price-text {
+            color: #d93025;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .comp-text {
+            color: #111;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        /* 전면 광고 모달 */
+        .full-screen-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .modal-ad-box {
+            background: #f8f9fa;
+            border: 2px solid #1a73e8;
+            border-radius: 10px;
+            padding: 40px 20px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+
+        .modal-close-btn {
+            background-color: #222222;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* 하단 푸터 (신뢰성 지표) */
+        footer {
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 상단 내비게이션 바: 로봇에게 사이트 구조의 명확성 전달 -->
+<div class="nav-bar">
+    <div class="nav-container">
+        <a href="#" class="nav-logo"><i class="fa-solid fa-chart-line"></i> 고단가 키워드 추천 플랫폼</a>
+        <div class="nav-menu">
+            <a href="#about-section">서비스 개요</a>
+            <a href="#tool-section">추천기 실행</a>
+            <a href="#guide-section">수익화 가이드</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <header>
+        <h1><i class="fa-solid fa-money-bill-trend-up"></i> 고단가 키워드 추천기</h1>
+    </header>
+
+    <!-- 애드센스 심사용 텍스트 콘텐츠 단락 1 -->
+    <section class="info-article" id="about-section">
+        <h2>💡 본 플랫폼의 핵심 목적 및 가치</h2>
+        <p>인터넷 환경에서의 디지털 저널리즘 및 블로그 저작물 가치는 독창적인 키워드 선정에서 시작됩니다. 본 시스템은 광고주 수요가 높은 고단가 시장(CPC)의 데이터를 체계적으로 수집·분석하여, 창작자분들이 높은 부가가치를 창출할 수 있는 단일 핵심 타겟 키워드를 무료로 선별하여 추천합니다.</p>
+    </section>
+
+    <!-- 상단 광고 영역 -->
+    <div class="promo-box-zone" id="topPromoZone">
+        <span class="promo-label">추천 정보</span>
+        <div class="banner-link-click" onclick="alert('광고창이 열립니다.')">
+            🎁 [특집] 4060 재취업 유망 자격증 단기 합격반 모집중! (클릭하고 확인)
+        </div>
+    </div>
+
+    <!-- 조건 선택 및 도구 영역 -->
+    <section class="search-box" id="tool-section">
+        <div class="form-group">
+            <label for="categorySelect"><i class="fa-solid fa-check"></i> 분석 및 추천받을 타겟 카테고리를 설정하세요</label>
+            <select id="categorySelect" class="form-control">
+                <option value="all">⭐ 전체 카테고리 고단가 데이터 분석</option>
+                <option value="finance">💰 금융 / 재테크 / 대출 / 연금</option>
+                <option value="health">🏥 건강 / 병원 / 약 / 보험</option>
+                <option value="education">✏️ 자격증 / 일자리 / 교육</option>
+                <option value="lifestyle">🏡 가전제품 / 생활 / 실버타운</option>
+            </select>
+        </div>
+
+        <button class="btn-large" id="recommendBtn" onclick="startAdWorkflow()">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> 키워드 추천
+        </button>
+    </section>
+
+    <!-- 결과 화면 구역 -->
+    <div id="resultArea">
+        <div style="text-align:center; padding:40px 20px; background:white; border-radius:12px; border:1px solid var(--border-color);">
+            <p style="font-size:1.1rem; font-weight:bold; color:#555;">분석 요청 버튼을 누르시면 알고리즘에 의해 실시간 엄선된 1개의 황금 키워드가 도출됩니다.</p>
+        </div>
+    </div>
+
+    <!-- 애드센스 심사용 텍스트 콘텐츠 단락 2 -->
+    <section class="info-article" id="guide-section" style="margin-top: 20px;">
+        <h2>📘 고수익 블로그 운영을 위한 필수 전략 요약</h2>
+        <p>1. <strong>문맥의 일관성 유지:</strong> 구글 애드센스 매칭 로봇은 텍스트의 일관성을 분석합니다. 추천받은 단어와 긴밀하게 연관된 유기적인 텍스트를 최소 1,500자 이상 서술형 문장 구조로 작성하시는 것이 좋습니다.</p>
+        <p>2. <strong>사용자 경험(UX) 중심 설계:</strong> 공식 블로그 가이드라인에 명시되어 있듯, 방문자가 웹사이트에서 얻는 가치와 가독성이 최우선입니다. 전문성 높은 정보와 명확한 소제목을 사용하여 이탈률을 낮추십시오.</p>
+    </section>
+
+    <!-- 하단 광고 영역 -->
+    <div class="promo-box-zone" id="bottomPromoZone">
+        <span class="promo-label">추천 정보</span>
+        <div class="banner-link-click" style="background: linear-gradient(135deg, #eef3fc, #e7f0fd); border-color: #1a73e8; color: #1a73e8;" onclick="alert('광고창이 열립니다.')">
+            📈 [무료 책자] 노후 준비를 위한 주택연금·국민연금 극대화 비법전서 증정
+        </div>
+    </div>
+</div>
+
+<!-- 전면 광고 팝업창(모달) -->
+<div class="full-screen-modal" id="adModal">
+    <div class="modal-content">
+        <div style="font-size: 0.8rem; color: #999; text-align: left; margin-bottom: 5px;">스폰서 전면 광고</div>
+        <h3 style="font-size: 1.3rem; color: #000; margin-bottom: 10px;">🔒 데이터 암호화를 해제하고 있습니다</h3>
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;" id="timerNotice">잠시만 기다려주세요...</p>
+        
+        <div class="modal-ad-box" id="modalAdBody" onclick="alert('광고 페이지로 이동합니다.')">
+            <h4 style="color: #d93025; font-size: 1.2rem; margin-bottom: 10px;" id="modalAdTitle">📢 [특집] 2026년 노령연금 숨은 수령액 찾아주기 신청 안내</h4>
+            <p style="font-size: 0.95rem; color: #444;">지금 클릭하여 내가 받을 수 있는 정부 지원금을 즉시 조회해보세요.</p>
+        </div>
+
+        <button class="modal-close-btn" id="modalCloseBtn" onclick="closeAdAndShowKeyword()" disabled style="background-color: #cccccc; cursor: not-allowed;">
+            3초 후 닫기 및 키워드 받기
+        </button>
+    </div>
+</div>
+
+<!-- 푸터: 사이트 신뢰성 및 필수 법적 요구 링크 추가 -->
+<footer>
+    <div class="footer-links">
+        <a href="#" onclick="alert('준비 중인 페이지입니다.'); return false;">이용약관</a> | 
+        <a href="#" onclick="alert('본 사이트는 개인정보를 수집하지 않습니다.'); return false;">개인정보처리방침</a> | 
+        <a href="#" onclick="alert('준비 중인 페이지입니다.'); return false;">고객문의</a>
+    </div>
+    <p style="margin-top: 15px; color: #888;">© 2026 고단가 키워드 추천기. All Rights Reserved. 본 서비스는 정보 제공 목적으로만 운영됩니다.</p>
+</footer>
+
+<script>
+    const keywordDatabase = [
+        { name: "65세 이상 임플란트 혜택 및 본인부담금 계산법", category: "health", categoryKo: "건강/의학/보험", cpc: 5.20, competition: "중간", tip: "정부에서 지원해 주는 만 65세 혜택 나이와 치과 주의사항을 적어보세요." },
+        { name: "도수치료 실비보험 청구 서류와 1년 제한 횟수", category: "health", categoryKo: "건강/의학/보험", cpc: 4.80, competition: "높음", tip: "손해보험사 실비 서류 양식과 꿀팁을 매칭해 작성하면 좋습니다." },
+        { name: "소상공인 저금리 대환대출 자격 조건 및 신청 홈페이지", category: "finance", categoryKo: "금융/재테크/대출", cpc: 6.50, competition: "높음", tip: "올해 소상공인시장진흥공단에서 발표한 최신 지침 링크를 걸어주세요." },
+        { name: "국민연금 조기수령 조건 나이 및 수령액 손해율 정리", category: "finance", categoryKo: "금융/재테크/대출", cpc: 4.10, competition: "중간", tip: "몇 년 일찍 받으면 몇 퍼센트 손해인지 표를 만들어 설명해 보세요." },
+        { name: "주택연금 가입조건 연령 및 내 집으로 매달 받는 돈 계산", category: "finance", categoryKo: "금융/재테크/대출", cpc: 4.60, competition: "낮음", tip: "카카오나 네이버 주택연금 계산기 사용법을 캡처해서 올려보세요." },
+        { name: "중장년 인기 손해평가사 시험일정 및 현실적인 연봉 수준", category: "education", categoryKo: "자격증/취업", cpc: 3.90, competition: "낮음", tip: "정년퇴직 후 제2의 직업으로 왜 인기가 많은지 장점을 부각하세요." },
+        { name: "지게차 운전기능사 필기 요약 및 기출문제 무료 다운로드", category: "education", categoryKo: "자격증/취업", cpc: 2.70, competition: "중간", tip: "50대 분들의 실제 합격 수기나 공부 방법 꿀팁을 적으면 좋습니다." },
+        { name: "전국 인기 실버타운 입주 자격 조건 및 한달 비용 비교", category: "lifestyle", categoryKo: "생활/가전/리빙", cpc: 3.50, competition: "낮음", tip: "도심형과 전원형 실버타운의 보증금 및 생활비 차이를 비교해 주면 대박납니다." },
+        { name: "홈쇼핑 가정용 음식물 분쇄기 렌탈 가격 및 장단점 비교", category: "lifestyle", categoryKo: "생활/가전/리빙", cpc: 2.90, competition: "중간", tip: "싱크대 설치형 제품의 불법 여부와 관리법 위주로 다뤄보세요." },
+        { name: "개인회생 절차 신청 비용 및 기각 사유 피하는 방법", category: "finance", categoryKo: "금융/재테크/대출", cpc: 8.80, competition: "매우 높음", tip: "단가가 엄청나게 높지만 광고주들이 꽉 잡고 있어 롱테일 키워드로 승부해야 합니다." }
+    ];
+
+    const dummyAdsTop = [
+        "🎁 [특집] 4060 재취업 유망 자격증 단기 합격반 모집중!",
+        "🔥 [인기] 한 달 300만원 버는 시니어 일자리 정보 긴급 입수",
+        "📢 [안내] 정부 보조금 나도 받을 수 있을까? 3분 조회기"
+    ];
+
+    const dummyAdsBottom = [
+        "📈 [무료 책자] 노후 준비를 위한 주택연금·국민연금 극대화 비법전서 증정",
+        "🏥 [비교] 나이 들어서 꼭 필요한 핵심 간병인 보험 알아보기",
+        "☕ [이벤트] 은퇴 후 소자본 창업 무인 카페 성공 사례집"
+    ];
+
+    const interstitialAds = [
+        "📢 [특집] 2026년 노령연금 숨은 수령액 찾아주기 신청 안내",
+        "🏥 [선착순] 고령층을 위한 임플란트 파격 지원 혜택 알아보기",
+        "💰 [금융] 잠자고 있는 카드 포인트 현금 전환 신청 공식 채널"
+    ];
+
+    function startAdWorkflow() {
+        const modal = document.getElementById("adModal");
+        const closeBtn = document.getElementById("modalCloseBtn");
+        const timerNotice = document.getElementById("timerNotice");
+        const modalAdTitle = document.getElementById("modalAdTitle");
+
+        const randIdx = Math.floor(Math.random() * interstitialAds.length);
+        modalAdTitle.innerText = interstitialAds[randIdx];
+
+        modal.style.display = "flex";
+        closeBtn.disabled = true;
+        closeBtn.style.backgroundColor = "#cccccc";
+        closeBtn.style.cursor = "not-allowed";
+        
+        let timeLeft = 3;
+        closeBtn.innerText = `${timeLeft}초 후 닫기 및 키워드 받기`;
+
+        const countdown = setInterval(() => {
+            timeLeft--;
+            if (timeLeft > 0) {
+                closeBtn.innerText = `${timeLeft}초 후 닫기 및 키워드 받기`;
+            } else {
+                clearInterval(countdown);
+                timerNotice.innerText = "확인이 완료되었습니다. 아래 버튼을 눌러주세요.";
+                closeBtn.disabled = false;
+                closeBtn.style.backgroundColor = "#1a73e8";
+                closeBtn.style.cursor = "pointer";
+                closeBtn.innerText = "✖ 광고 닫고 키워드 확인하기";
+            }
+        }, 1000);
+    }
+
+    function closeAdAndShowKeyword() {
+        document.getElementById("adModal").style.display = "none";
+        getSingleKeyword();
+    }
+
+    function getSingleKeyword() {
+        try {
+            const selectedCategory = document.getElementById("categorySelect").value;
+            const resultArea = document.getElementById("resultArea");
+
+            if (!resultArea) return;
+
+            const filtered = keywordDatabase.filter(item => {
+                return (selectedCategory === "all" || item.category === selectedCategory);
+            });
+
+            if (filtered.length === 0) {
+                resultArea.innerHTML = `<div style="text-align:center; padding:20px; background:white; font-weight:bold; color:red;">검색된 키워드가 없습니다.</div>`;
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * filtered.length);
+            const choice = filtered[randomIndex];
+
+            resultArea.innerHTML = `
+                <div class="single-result-card">
+                    <span class="result-tag"><i class="fa-solid fa-star"></i> 추천 분야: ${choice.categoryKo}</span>
+                    <div class="result-title">👉 제목에 쓰기 좋은 문장:<br><strong>"${choice.name}"</strong></div>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span style="font-weight:bold; color:#555;">💵 1번 누를 때 예상 광고비:</span><br>
+                            <span class="price-text">미국 달러 $${choice.cpc.toFixed(2)}</span>
+                        </div>
+                        <div class="info-item">
+                            <span style="font-weight:bold; color:#555;">🔥 다른 블로거들과의 경쟁 정도:</span><br>
+                            <span class="comp-text">${choice.competition}</span>
+                        </div>
+                    </div>
+
+                    <div class="hint-box">
+                        <strong>💡 [쉽게 알려주는 글쓰기 힌트]</strong><br>
+                        ${choice.tip}
+                    </div>
+                </div>
+            `;
+
+            refreshPromoZones();
+
+        } catch (error) {
+            console.error("오류 발생:", error);
+        }
+    }
+
+    function refreshPromoZones() {
+        try {
+            const randomTopIdx = Math.floor(Math.random() * dummyAdsTop.length);
+            const randomBotIdx = Math.floor(Math.random() * dummyAdsBottom.length);
+            
+            const topDummy = document.querySelector("#topPromoZone .banner-link-click");
+            const botDummy = document.querySelector("#bottomPromoZone .banner-link-click");
+            
+            if (topDummy) topDummy.innerText = dummyAdsTop[randomTopIdx];
+            if (botDummy) botDummy.innerText = dummyAdsBottom[randomBotIdx];
+
+            if (typeof adsbygoogle !== 'undefined') {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+        } catch (e) {
+            console.log("배너 로딩 대기...");
+        }
+    }
+</script>
+</body>
+</html>
